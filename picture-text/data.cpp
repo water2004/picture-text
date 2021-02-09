@@ -34,11 +34,11 @@ void data1::setImg(QString s)
     for(int i=0;i<=width;i++)//建立动态的二维数组
     {
         R[i]=new long long[height+1];
-        R[i][height]=0;//初始化那个用来保命的+1,下同
+        R[i][height]=background.red();//初始化那个用来保命的+1,下同
         G[i]=new long long[height+1];
-        G[i][height]=0;
+        G[i][height]=background.green();
         B[i]=new long long[height+1];
-        B[i][height]=0;
+        B[i][height]=background.blue();
     }
     img=pix.toImage();
     QColor color;
