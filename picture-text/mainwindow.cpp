@@ -29,7 +29,7 @@ data1* MainWindow::getdat()
 void MainWindow::on_choosePic_clicked()//打开图片
 {
     //ui->massage->setText("正在读取并预处理图片...");
-    QString s=QFileDialog::getOpenFileName(this);
+    QString s=QFileDialog::getOpenFileName(this,tr("选择图片"),dat->pic,tr("Images (*.png *.bmp *.jpg)"));
     if(s!="")//即打开图片被取消
     {
         dat->setImg(s);
@@ -50,8 +50,10 @@ void MainWindow::on_OK_clicked()//生成图片
     if(!check()) return;//未填写完整
     dat->fixH=ui->fixH->value();
     dat->fixW=ui->fixW->value();
+    QString save=QFileDialog::getSaveFileName(this,tr("Save Image"),"result.png",tr("Images (*.png *.bmp *.jpg)")); //选择路径
+    if(save=="") return;
     dat->create();
-    dat->ans.save("result.png");
+    dat->ans.save(save);
     //ui->massage->setText("图片已保存为result.png");
 }
 
@@ -85,7 +87,7 @@ bool MainWindow::check()//检查填写完整性
         QMessageBox::critical(this,"错误","你还没有输入要写入图片的文字！");
         flag=false;
     }
-    if(dat->pic=="")
+    else if(dat->pic=="")
     {
         //ui->massage->setText("请选择图片");
         QMessageBox::critical(this,"错误","你还没有选择图片！");
