@@ -23,7 +23,8 @@ public:
     QPixmap pix;//原图
     QImage img;
     QFont font;//字体
-    long long **R,**G,**B;//记录颜色值的前缀和数组
+    long long **R,**G,**B,**A;//记录颜色值的前缀和数组
+    long long **dt;//记录非透明像素数
     /*  p1(x1,y1)  p2
      *
      *  p3  p4(x2,y2) */
@@ -43,6 +44,7 @@ public:
     QColor lighter(QColor c);//亮度补偿
     bool imgSetted=false;//没设置图片析构函数就delete了个寂寞,为了返回值的强迫症QAQ
     QColor background=Qt::black;
+    QColor merge(QColor bak,QColor alp);
 
 signals:
 

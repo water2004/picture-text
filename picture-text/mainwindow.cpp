@@ -102,7 +102,7 @@ bool MainWindow::check()//检查填写完整性
 
 void MainWindow::on_background_clicked()
 {
-    QColor tmp=QColorDialog::getColor(dat->background);
+    QColor tmp=QColorDialog::getColor(dat->background,this,tr("选择颜色"),QColorDialog::ShowAlphaChannel);
     if(tmp!=QColor::Invalid)
     {
         dat->background=tmp;
