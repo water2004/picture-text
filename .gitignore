@@ -34,3 +34,5 @@ Makefile*
 *.qmlproject.user.*
 
 build-picture-text-unknown-Debug/
+
+build-picture-text-unknown-Release/
