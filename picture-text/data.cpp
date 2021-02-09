@@ -1,11 +1,12 @@
 #include "data.h"
 #include <cmath>
+#include <QMessageBox>
 using std::max;
 using std::min;
 
-data1::data1(QObject *parent) : QObject(parent)
+data1::data1(QWidget *parent)
 {
-
+    pat=parent;
 }
 data1::~data1()
 {
@@ -115,7 +116,7 @@ QColor data1::lighter(QColor c)
      QImage tmp=pix.toImage();//保存副本
      tmp=tmp.scaled(int(width*scale),int(height*scale),Qt::KeepAspectRatio, Qt::SmoothTransformation);//缩放
      QImage result=tmp;
-     result.fill(Qt::black);
+     result.fill(background);
      QPainter painter(&result);//设置画布
      painter.setPen(QPen(QColor(255,255,255)));//初始化画笔
      painter.setFont(font);
@@ -124,6 +125,11 @@ QColor data1::lighter(QColor c)
      QString str=getChar(pos);
      int h=fm.ascent()+fm.descent();//文字高度,同一字体高度不变
      int w=fm.width(str);//文字长度,会改变,实时计算
+     if(fixH+h<=0)
+     {
+         QMessageBox::critical(pat,"错误","纵向修正过大！");
+         return;
+     }
      int maxH=height*scale;//画布大小,下同
      int maxW=width*scale;
      bool stop=false;
@@ -159,6 +165,7 @@ QColor data1::lighter(QColor c)
              {
                  QColor col=tmp.pixel(i,j);
                  QColor co=result.pixel(i,j);
+                 if(co==background) continue;
                  QColor re;
                  re.setRed(co.red()*col.red()/255);//按比例调整深浅(细节模式下画笔为白色)
                  re.setBlue(co.blue()*col.blue()/255);

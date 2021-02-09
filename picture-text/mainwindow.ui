@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>以字为图</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>picture-text.png</normaloff>picture-text.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
@@ -67,6 +71,13 @@
                </property>
                <property name="text">
                 <string>选择字体</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="background">
+               <property name="text">
+                <string>背景颜色</string>
                </property>
               </widget>
              </item>
@@ -257,19 +268,6 @@
         </widget>
        </item>
       </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="massage">
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="text">
-       <string>请输入要写入图片的文字</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
      </widget>
     </item>
    </layout>

@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <data.h>
+#include "data.h"
+#include <QColorDialog>
+
 namespace Ui {
 class MainWindow;
 }
@@ -14,7 +16,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    data1 dat;
+    data1 *dat;
     data1* getdat();
     bool check();
 
@@ -30,6 +32,8 @@ private slots:
     void on_detail_clicked();
 
     void on_repeat_clicked();
+
+    void on_background_clicked();
 
 private:
     Ui::MainWindow *ui;

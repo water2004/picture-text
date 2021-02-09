@@ -11,12 +11,14 @@
 #include <QPainter>
 #include <QPen>
 #include <QMainWindow>
+#include <QWidget>
 
 class data1 : public QObject
 {
     Q_OBJECT
 public:
-    explicit data1(QObject *parent = nullptr);
+    explicit data1(QWidget *parent = nullptr);
+    QWidget *pat;
     QString pic;//图片路径
     QPixmap pix;//原图
     QImage img;
@@ -40,6 +42,8 @@ public:
     double light;//亮度补偿,-0.99~0.99
     QColor lighter(QColor c);//亮度补偿
     bool imgSetted=false;//没设置图片析构函数就delete了个寂寞,为了返回值的强迫症QAQ
+    QColor background=Qt::black;
+
 signals:
 
 public slots:
