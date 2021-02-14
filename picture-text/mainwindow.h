@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "data.h"
 #include <QColorDialog>
+#include "preview.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,6 +19,7 @@ public:
     ~MainWindow();
     data1 *dat;
     data1* getdat();
+    QPixmap mmp;
     bool check();
 
 private slots:
@@ -35,8 +37,11 @@ private slots:
 
     void on_background_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_H

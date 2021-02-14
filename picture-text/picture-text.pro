@@ -29,14 +29,19 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    data.cpp
+    data.cpp \
+    preview.cpp \
+    mylabel.cpp
 
 HEADERS += \
         mainwindow.h \
-    data.h
+    data.h \
+    preview.h \
+    mylabel.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    preview.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
