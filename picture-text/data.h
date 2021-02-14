@@ -36,11 +36,11 @@ public:
     QImage ans;
     QString text;//要加入的文字
     QString getChar(int &pos);//取出text中位于pos的字符
-    double scale;//缩放倍数
+    float scale;//缩放倍数
     bool mod=true;//true=pure false=detail
     int fixW,fixH;//横向修正大小和纵向修正大小
     bool repeat=true;//自动重复文字
-    double light;//亮度补偿,-0.99~0.99
+    float light;//亮度补偿,-0.99~0.99
     QColor lighter(QColor c);//亮度补偿
     bool imgSetted=false;//没设置图片析构函数就delete了个寂寞,为了返回值的强迫症QAQ
     QColor background=Qt::black;

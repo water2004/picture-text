@@ -142,7 +142,7 @@ return (RGBVlue1 * fTranslucent1 * (1.0 - fTranslucent2) + RGBVlue2 * fTransluce
 }
 QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
 {
-    double a1,a2;
+    float a1,a2;
     a1=p1.alpha();a2=p2.alpha();
     a1/=255;a2/=255;
     if(a1+a2==0.0||a1+a2-a1*a2==0.0)
@@ -237,10 +237,10 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
                  QColor col=tmp.pixelColor(i,j);
                  QColor co=result.pixelColor(i,j);
                  QColor re;
-                 re.setRed(co.red()*col.red()/255);//按比例调整深浅(细节模式下画笔为白色)
-                 re.setBlue(co.blue()*col.blue()/255);
-                 re.setGreen(co.green()*col.green()/255);
-                 re.setAlpha(col.alpha()*co.alpha()/255);
+                 re.setRed(co.red()*col.red()>>8);//按比例调整深浅(细节模式下画笔为白色)
+                 re.setBlue(co.blue()*col.blue()>>8);//近似,加快计算,毕竟255和256也没差多少嘛
+                 re.setGreen(co.green()*col.green()>>8);
+                 re.setAlpha(col.alpha()*co.alpha()>>8);
                  re=merge(re,background);
                  re=lighter(re);//亮度补偿
                  result.setPixelColor(i,j,re);
