@@ -15,7 +15,6 @@ preview::~preview()
 
 void preview::setPic(QPixmap *pic)
 {
-    //picture=pic;
     ui->label->sourse=pic;
 }
 

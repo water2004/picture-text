@@ -19,7 +19,6 @@ public:
     explicit preview(QWidget *parent = nullptr);
     ~preview();
     data1 *dat;
-    QPixmap *picture;
     void refresh();
     void setPic(QPixmap *pic);
     void init();
