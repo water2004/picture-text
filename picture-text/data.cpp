@@ -181,12 +181,11 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
  void data1::create()
  {
      QImage tmp=pix.toImage();//保存副本
-     tmp=tmp.scaled(int(width*scale),int(height*scale),Qt::KeepAspectRatio, Qt::SmoothTransformation);//缩放
-     QImage result=tmp;
-     result=result.convertToFormat(QImage::Format_ARGB32);
-     if(!mod) result.fill(QColor(255,255,255,0));
-     else result.fill(background);
-     QPainter painter(&result);//设置画布
+     ans=tmp.scaled(int(width*scale),int(height*scale),Qt::KeepAspectRatio, Qt::SmoothTransformation);//缩放
+     ans=QImage(tmp.width(),tmp.height(),QImage::Format_ARGB32);
+     if(!mod) ans.fill(QColor(255,255,255,0));
+     else ans.fill(background);
+     QPainter painter(&ans);//设置画布
      painter.setPen(QPen(Qt::white));//初始化画笔
      painter.setFont(font);
      QFontMetrics fm = painter.fontMetrics();//用于计算每个字占的长宽
@@ -235,7 +234,7 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
              for(int j=0;j<maxH;j++)
              {
                  QColor col=tmp.pixelColor(i,j);
-                 QColor co=result.pixelColor(i,j);
+                 QColor co=ans.pixelColor(i,j);
                  QColor re;
                  re.setRed(co.red()*col.red()>>8);//按比例调整深浅(细节模式下画笔为白色)
                  re.setBlue(co.blue()*col.blue()>>8);//近似,加快计算,毕竟255和256也没差多少嘛
@@ -243,9 +242,8 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
                  re.setAlpha(col.alpha()*co.alpha()>>8);
                  re=merge(re,background);
                  re=lighter(re);//亮度补偿
-                 result.setPixelColor(i,j,re);
+                 ans.setPixelColor(i,j,re);
              }
          }
      }
-     ans=result;//记录结果
  }
