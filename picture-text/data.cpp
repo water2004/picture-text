@@ -181,7 +181,7 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
  void data1::create()
  {
      QImage tmp=pix.toImage();//保存副本
-     ans=tmp.scaled(int(width*scale),int(height*scale),Qt::KeepAspectRatio, Qt::SmoothTransformation);//缩放
+     tmp=tmp.scaled(int(width*scale),int(height*scale),Qt::KeepAspectRatio, Qt::SmoothTransformation);//缩放
      ans=QImage(tmp.width(),tmp.height(),QImage::Format_ARGB32);
      if(!mod) ans.fill(QColor(255,255,255,0));
      else ans.fill(background);

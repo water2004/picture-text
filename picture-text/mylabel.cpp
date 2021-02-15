@@ -51,7 +51,7 @@ void myLabel::refresh(int mx,int my)//更新图片(主要用于缩放),mx,my是�
         if(addition*sourse->height()<=50) addition=50/double(sourse->height());
     }
     //按比例缩放,同时有更新图片的作用
-    myPic = sourse->scaled(sourse->width()*addition, sourse->height()*addition, Qt::KeepAspectRatio, Qt::FastTransformation);
+    myPic = sourse->scaled(sourse->width()*addition, sourse->height()*addition, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     resize(myPic.width(),myPic.height());
     double ratio=double(width())/wid;//缩放倍率
     wid=width();hei=height();
@@ -71,7 +71,7 @@ void myLabel::refresh(int mx,int my)//更新图片(主要用于缩放),mx,my是�
 void myLabel::init()//初始化
 {
     setted=true;
-    myPic = sourse->scaled(640, 360, Qt::KeepAspectRatio, Qt::FastTransformation);  // 按比例缩放,填满初始屏幕
+    myPic = sourse->scaled(640, 360, Qt::KeepAspectRatio, Qt::SmoothTransformation);  // 按比例缩放,填满初始屏幕
     addition=double(min(myPic.width(),myPic.height()))/double(min(sourse->width(),sourse->height()));//初始化倍率
     move(0,0);//移动到初始位置
     resize(myPic.width(),myPic.height());
