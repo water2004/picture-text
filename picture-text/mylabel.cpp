@@ -50,6 +50,10 @@ void myLabel::refresh(int mx,int my)//更新图片(主要用于缩放),mx,my是�
     {
         if(addition*sourse->height()<=50) addition=50/double(sourse->height());
     }
+    while(sourse->width()*addition*sourse->height()*addition>134217728)//防止过度缩放爆内存
+    {
+        addition/=1.25;
+    }
     //按比例缩放,同时有更新图片的作用
     myPic = sourse->scaled(sourse->width()*addition, sourse->height()*addition, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     resize(myPic.width(),myPic.height());
