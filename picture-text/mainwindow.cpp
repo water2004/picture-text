@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dat->mod=true;
     ui->view->setPic(&dat->pix);
     ui->textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    dat->font.setFamily("微软雅黑");
 }
 
 MainWindow::~MainWindow()
@@ -60,7 +61,6 @@ void MainWindow::on_OK_clicked()//生成图片
 void MainWindow::on_pushButton_clicked()//选择字体
 {
     bool ok;
-    //dat->font.setFamily("黑体");
     dat->font=QFontDialog::getFont(&ok,dat->font);
 }
 

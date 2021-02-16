@@ -44,9 +44,15 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>6400</width>
-           <height>3600</height>
+           <width>64000</width>
+           <height>36000</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>12</pointsize>
+          </font>
          </property>
         </widget>
        </item>
@@ -64,6 +70,12 @@
            <height>200</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
         </widget>
        </item>
        <item>
@@ -77,6 +89,18 @@
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QPushButton" name="OK">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>生成图片</string>
             </property>
@@ -84,6 +108,18 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>预览图片</string>
             </property>
@@ -91,6 +127,18 @@
           </item>
           <item>
            <widget class="QPushButton" name="choosePic">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>选择图片</string>
             </property>
@@ -119,6 +167,18 @@
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
            <widget class="QCheckBox" name="repeat">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>重复</string>
             </property>
@@ -126,6 +186,18 @@
           </item>
           <item>
            <widget class="QRadioButton" name="detail">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>更多细节</string>
             </property>
@@ -133,6 +205,18 @@
           </item>
           <item>
            <widget class="QRadioButton" name="pure">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>纯净文字</string>
             </property>
@@ -152,6 +236,18 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>纵向修正</string>
             </property>
@@ -159,6 +255,18 @@
           </item>
           <item>
            <widget class="QSpinBox" name="fixH">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="minimum">
              <number>-100000</number>
             </property>
@@ -181,6 +289,18 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>横向修正</string>
             </property>
@@ -188,6 +308,18 @@
           </item>
           <item>
            <widget class="QSpinBox" name="fixW">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="minimum">
              <number>-100000</number>
             </property>
@@ -213,6 +345,18 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>整体缩放</string>
             </property>
@@ -220,6 +364,18 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="scale">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="minimum">
              <double>0.010000000000000</double>
             </property>
@@ -248,6 +404,18 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>亮度补偿</string>
             </property>
@@ -255,6 +423,18 @@
           </item>
           <item>
            <widget class="QSpinBox" name="addLight">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="minimum">
              <number>-99</number>
             </property>
@@ -280,6 +460,18 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>选择字体</string>
             </property>
@@ -287,6 +479,18 @@
           </item>
           <item>
            <widget class="QPushButton" name="background">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>背景颜色</string>
             </property>
