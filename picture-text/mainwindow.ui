@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1066</width>
-    <height>666</height>
+    <width>931</width>
+    <height>621</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,24 +29,15 @@
      <widget class="QWidget" name="widget_4" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="preview" name="view" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+        <widget class="MyGraphicsView" name="graphicsView">
+         <property name="dragMode">
+          <enum>QGraphicsView::ScrollHandDrag</enum>
          </property>
-         <property name="minimumSize">
-          <size>
-           <width>640</width>
-           <height>360</height>
-          </size>
+         <property name="transformationAnchor">
+          <enum>QGraphicsView::AnchorUnderMouse</enum>
          </property>
-         <property name="maximumSize">
-          <size>
-           <width>6400</width>
-           <height>3600</height>
-          </size>
+         <property name="resizeAnchor">
+          <enum>QGraphicsView::AnchorUnderMouse</enum>
          </property>
         </widget>
        </item>
@@ -304,10 +295,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>preview</class>
-   <extends>QWidget</extends>
-   <header>preview.h</header>
-   <container>1</container>
+   <class>MyGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>mygraphicsview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

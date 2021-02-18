@@ -30,18 +30,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     data.cpp \
-    preview.cpp \
-    mylabel.cpp
+    mygraphicsview.cpp
 
 HEADERS += \
         mainwindow.h \
     data.h \
-    preview.h \
-    mylabel.h
+    mygraphicsview.h
 
 FORMS += \
-        mainwindow.ui \
-    preview.ui
+        mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

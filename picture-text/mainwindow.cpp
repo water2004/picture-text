@@ -5,7 +5,6 @@
 #include <QPainter>
 #include <QFontDialog>
 #include <QMessageBox>
-#include "preview.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pure->setChecked(true);
     ui->repeat->setChecked(true);
     dat->mod=true;
-    ui->view->setPic(&dat->pix);
     ui->textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 }
 
@@ -31,19 +29,18 @@ data1* MainWindow::getdat()
 }
 void MainWindow::on_choosePic_clicked()//打开图片
 {
-    //ui->massage->setText("正在读取并预处理图片...");
     QString s=QFileDialog::getOpenFileName(this,tr("选择图片"),dat->pic,tr("Images (*.png *.bmp *.jpg)"));
-    if(s!="")//即成功打开图片
+    if(s!="")//成功打开图片
     {
         dat->setImg(s);
-        ui->view->setPic(&dat->pix);
-        ui->view->init();
+        dat->result=QPixmap::fromImage(dat->img);
+        ui->graphicsView->init(&dat->result);
+        dat->result=QPixmap();//释放内存
     }
 }
 
 void MainWindow::on_OK_clicked()//生成图片
 {
-    //ui->massage->setText("正在生成图片...");
     dat->scale=ui->scale->value();
     dat->light=double(ui->addLight->value())/100;//定义域!
     dat->text=ui->textEdit->toPlainText();
@@ -53,14 +50,13 @@ void MainWindow::on_OK_clicked()//生成图片
     QString save=QFileDialog::getSaveFileName(this,tr("Save Image"),"result.png",tr("Images (*.png *.bmp *.jpg)")); //选择路径
     if(save=="") return;
     dat->create();
+    dat->result=QPixmap();
     dat->ans.save(save);
-    //ui->massage->setText("图片已保存为result.png");
 }
 
 void MainWindow::on_pushButton_clicked()//选择字体
 {
     bool ok;
-    //dat->font.setFamily("黑体");
     dat->font=QFontDialog::getFont(&ok,dat->font);
 }
 
@@ -93,10 +89,6 @@ bool MainWindow::check()//检查填写完整性
         QMessageBox::critical(this,"错误","你还没有选择图片！");
         flag=false;
     }
-    if(flag)
-    {
-        //ui->massage->setText("准备就绪");
-    }
     return flag;
 }
 
@@ -120,6 +112,6 @@ void MainWindow::on_pushButton_2_clicked()
     if(!check()) return;
     dat->create();
     mmp=QPixmap::fromImage(dat->ans);
-    ui->view->setPic(&mmp);
-    ui->view->refresh();
+    ui->graphicsView->refresh(&dat->result);
+    dat->result=QPixmap();//释放内存
 }

@@ -4,7 +4,8 @@
 #include <QMainWindow>
 #include "data.h"
 #include <QColorDialog>
-#include "preview.h"
+#include <QFileDialog>
+#include <QColorDialog>
 
 namespace Ui {
 class MainWindow;
