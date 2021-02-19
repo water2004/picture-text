@@ -28,7 +28,7 @@
 
 ### 预览
 
-拖动图片以移动,滚动鼠标滚轮以缩放,由于技术不行,太大会爆内存,于是设置了缩放上限
+拖动图片以移动,滚动鼠标滚轮以缩放
 
 ### 重复
 
@@ -54,4 +54,13 @@
 
 ## 效果图
 
-![](https://s3.ax1x.com/2021/02/16/yg9UgA.png)
+[效果图](https://s3.ax1x.com/2021/02/16/yg9UgA.png)
+
+## 感谢大佬们的支持
+
+[图标制作: Yzzi](https://github.com/uiYzzi)
+
+[亮度补偿算法](https://blog.csdn.net/maozefa/article/details/4493395)
+
+[颜色叠加算法及实现](https://blog.csdn.net/u012377293/article/details/108606854)
+
