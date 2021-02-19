@@ -7,6 +7,7 @@ using std::min;
 data1::data1(QWidget *parent)
 {
     pat=parent;
+    font.setFamily("微软雅黑");
 }
 data1::~data1()
 {
@@ -245,6 +246,8 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
              green*=qGreen(tmp_data[i]);green>>=8;
              blue*=qBlue(tmp_data[i]);blue>>=8;
              alpha*=qAlpha(tmp_data[i]);alpha>>=8;
+             QColor ansc=merge(QColor(red,green,blue,alpha),background);
+             red=ansc.red();blue=ansc.blue();green=ansc.green();alpha=ansc.alpha();
          }
          if(light>0)    //公式来源于:https://blog.csdn.net/maozefa/article/details/4493395
          {
