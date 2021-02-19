@@ -42,8 +42,8 @@ public:
     int **dt;//记录非透明像素数
     int width,height;//原图宽和高
     int fixW,fixH;//横向修正大小和纵向修正大小
-    float light;//亮度补偿,-0.99~0.99
-    float scale;//缩放倍数
+    double light;//亮度补偿,-0.99~0.99
+    double scale;//缩放倍数
     bool mod=true;//true=pure false=detail
     bool repeat=true;//自动重复文字
     bool imgSetted=false;//没设置图片析构函数就delete了个寂寞,为了返回值的强迫症QAQ

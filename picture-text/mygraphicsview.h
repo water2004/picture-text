@@ -15,7 +15,9 @@ public:
     void wheelEvent(QWheelEvent *event);//缩放
     void init(QPixmap *pix);//初始化
     void refresh(QPixmap *pix);//刷新
-    QGraphicsScene scene;
+    int Pwidth;
+    ~MyGraphicsView();
+    QGraphicsScene *scene;
 
 signals:
 

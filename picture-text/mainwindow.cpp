@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->repeat->setChecked(true);
     dat->mod=true;
     ui->textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ui->graphicsView->scene=new QGraphicsScene;
+    ui->graphicsView->setScene(ui->graphicsView->scene);
 }
 
 MainWindow::~MainWindow()

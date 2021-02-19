@@ -30,6 +30,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="MyGraphicsView" name="graphicsView">
+         <property name="renderHints">
+          <set>QPainter::Antialiasing|QPainter::SmoothPixmapTransform</set>
+         </property>
          <property name="dragMode">
           <enum>QGraphicsView::ScrollHandDrag</enum>
          </property>
