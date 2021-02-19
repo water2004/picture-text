@@ -27,16 +27,32 @@ data1::~data1()
 }
 void data1::setImg(QString s)
 {
+    if(imgSetted)
+    {
+        for(int i=0;i<=width;i++)//二维动态数组
+        {
+            delete [] R[i];
+            delete [] G[i];
+            delete [] B[i];
+            delete [] A[i];
+            delete [] dt[i];
+        }
+        delete [] R;
+        delete [] G;
+        delete [] B;
+        delete [] A;
+        delete [] dt;
+    }
     imgSetted=true;
     pic=s;
-    pix.load(s);
-    width=pix.width();
-    height=pix.height();
+    img.load(s);
+    width=img.width();
+    height=img.height();
     R=new long long* [width+1];//+1保命,防止越界,下同
     G=new long long* [width+1];
     B=new long long* [width+1];
     A=new long long* [width+1];
-    dt=new long long* [width+1];
+    dt=new int* [width+1];
     for(int i=0;i<=width;i++)//建立动态的二维数组
     {
         R[i]=new long long[height+1];
@@ -47,21 +63,31 @@ void data1::setImg(QString s)
         B[i][height]=background.blue();
         A[i]=new long long [height+1];
         A[i][height]=background.alpha();
-        dt[i]=new long long[height+1];
+        dt[i]=new int[height+1];
         dt[i][height]=0;
     }
-    img=pix.toImage();
     QColor color;
     for(int i=0;i<width;i++)//初始化前缀和,注意这里不能+1
     {
         for(int j=0;j<height;j++)
         {
             color=img.pixelColor(i,j);
-            R[i][j]=(long long)color.red();
-            G[i][j]=(long long)color.green();
-            B[i][j]=(long long)color.blue();
-            A[i][j]=(long long)color.alpha();
-            dt[i][j]=color.alpha()!=0;
+            if(color.alpha())
+            {
+                R[i][j]=color.red();
+                G[i][j]=color.green();
+                B[i][j]=color.blue();
+                A[i][j]=color.alpha();
+                dt[i][j]=1;
+            }
+            else
+            {
+                R[i][j]=0;
+                G[i][j]=0;
+                B[i][j]=0;
+                A[i][j]=0;
+                dt[i][j]=0;
+            }
         }
     }
     for(int i=1;i<=width;i++)//求二维前缀和
@@ -88,21 +114,21 @@ QColor data1::average(int x1, int y1, int x2, int y2)
     if(y2<0) y2=0;
     long long sum;//区域内所有值的和
     long long dot=dt[x2][y2]+dt[x1][y1]-dt[x2][y1]-dt[x1][y2];
-    QColor ans=Qt::white;//平均颜色
+    QColor ansc=Qt::white;//平均颜色
     if(!dot)
     {
-        ans.setAlpha(0);
-        return ans;
+        ansc.setAlpha(0);
+        return ansc;
     }
     sum=R[x2][y2]+R[x1][y1]-R[x2][y1]-R[x1][y2];
-    ans.setRed(sum/dot);
+    ansc.setRed(sum/dot);
     sum=G[x2][y2]+G[x1][y1]-G[x2][y1]-G[x1][y2];
-    ans.setGreen(sum/dot);
+    ansc.setGreen(sum/dot);
     sum=B[x2][y2]+B[x1][y1]-B[x2][y1]-B[x1][y2];
-    ans.setBlue(sum/dot);
+    ansc.setBlue(sum/dot);
     sum=A[x2][y2]+A[x1][y1]-A[x2][y1]-A[x1][y2];
-    ans.setAlpha(sum/((y2-y1+1)*(x2-x1+1)));
-    return lighter(ans);//亮度补偿
+    ansc.setAlpha(sum/((y2-y1+1)*(x2-x1+1)));
+    return ansc;
 }
 QString data1::getChar(int &pos)
 {
@@ -112,37 +138,14 @@ QString data1::getChar(int &pos)
     ans.push_back(text[pos]);
     return ans;
 }
-QColor data1::lighter(QColor c)
-{
-    //公式来源于:https://blog.csdn.net/maozefa/article/details/4493395
-    if(light==0.0) return c;//不处理
-    int R=c.red(),G=c.green(),B=c.blue();
-    int newR,newG,newB;
-    if(light>0)
-    {
-        newR=R*(1/(1-light));
-        newG=G*(1/(1-light));
-        newB=B*(1/(1-light));
-        newR=min(newR,255);
-        newG=min(newG,255);
-        newB=min(newB,255);
-    }
-    else
-    {
-        newR=R*(1+light);
-        newG=G*(1+light);
-        newB=B*(1+light);
-    }
-    return QColor(newR,newG,newB,c.alpha());
-}
-float calculateRGBAValue(const float fTranslucent1, const float fTranslucent2, const float RGBVlue1, const float RGBVlue2)
+double calculateRGBAValue(const double fTranslucent1, const double fTranslucent2, const double RGBVlue1, const double RGBVlue2)
 {
 return (RGBVlue1 * fTranslucent1 * (1.0 - fTranslucent2) + RGBVlue2 * fTranslucent2)
         / (fTranslucent1 + fTranslucent2 - fTranslucent1 * fTranslucent2);  //计算两个叠加后的值
 }
 QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
 {
-    float a1,a2;
+    double a1,a2;
     a1=p1.alpha();a2=p2.alpha();
     a1/=255;a2/=255;
     if(a1+a2==0.0||a1+a2-a1*a2==0.0)
@@ -156,23 +159,23 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
     //处理两种颜色叠加时透明度a-alpha值
 #define backgroundColor p2
 #define foregroundColor p1
-    float fTranslucent1 = backgroundColor.alpha() / 255.0;
-    float fTranslucent2 = foregroundColor.alpha() / 255.0;
-    float fTranslucent = fTranslucent1 + fTranslucent2 - fTranslucent1 * fTranslucent2;
+    double fTranslucent1 = backgroundColor.alpha() / 255.0;
+    double fTranslucent2 = foregroundColor.alpha() / 255.0;
+    double fTranslucent = fTranslucent1 + fTranslucent2 - fTranslucent1 * fTranslucent2;
     //计算R-Red值
-    float fRed1 = backgroundColor.red() / 255.0;
-    float fRed2 = foregroundColor.red() / 255.0;
-    float fRed = calculateRGBAValue(fTranslucent1, fTranslucent2, fRed1, fRed2);
+    double fRed1 = backgroundColor.red() / 255.0;
+    double fRed2 = foregroundColor.red() / 255.0;
+    double fRed = calculateRGBAValue(fTranslucent1, fTranslucent2, fRed1, fRed2);
 
     //计算G - Green值
-    float fGreen1 = backgroundColor.green() / 255.0;
-    float fGreen2 = foregroundColor.green() / 255.0;
-    float fGreen = calculateRGBAValue(fTranslucent1, fTranslucent2, fGreen1, fGreen2);
+    double fGreen1 = backgroundColor.green() / 255.0;
+    double fGreen2 = foregroundColor.green() / 255.0;
+    double fGreen = calculateRGBAValue(fTranslucent1, fTranslucent2, fGreen1, fGreen2);
 
     //计算B - Blue值
-    float fBlue1 = backgroundColor.blue() / 255.0;
-    float fBlue2 = foregroundColor.blue() / 255.0;
-    float fBlue = calculateRGBAValue(fTranslucent1, fTranslucent2, fBlue1, fBlue2);
+    double fBlue1 = backgroundColor.blue() / 255.0;
+    double fBlue2 = foregroundColor.blue() / 255.0;
+    double fBlue = calculateRGBAValue(fTranslucent1, fTranslucent2, fBlue1, fBlue2);
     return QColor(fRed * 255, fGreen * 255, fBlue * 255, fTranslucent * 255);
 #undef foregroundColor
 #undef backgroundColor
@@ -180,7 +183,7 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
 
  void data1::create()
  {
-     QImage tmp=pix.toImage();//保存副本
+     QImage tmp=img;
      tmp=tmp.scaled(int(width*scale),int(height*scale),Qt::KeepAspectRatio, Qt::SmoothTransformation);//缩放
      ans=QImage(tmp.width(),tmp.height(),QImage::Format_ARGB32);
      if(!mod) ans.fill(QColor(255,255,255,0));
@@ -226,24 +229,40 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
          }
          y+=h+fixH;//移位同时修正
      }
-     //result.save("debug.png");
-     if(!mod)//细节模式,处理每个像素
+     unsigned int *data = (unsigned int *)ans.bits();//直接访问,加快速度
+     unsigned int *tmp_data = (unsigned int *)tmp.bits();
+     int pixel=maxW*maxH;
+     int red,green,blue,alpha;
+     for(int i=0;i<pixel;i++)
      {
-         for(int i=0;i<maxW;i++)
+         red=qRed(data[i]);
+         green=qGreen(data[i]);
+         blue=qBlue(data[i]);
+         alpha=qAlpha(data[i]);
+         if(!mod)
          {
-             for(int j=0;j<maxH;j++)
-             {
-                 QColor col=tmp.pixelColor(i,j);
-                 QColor co=ans.pixelColor(i,j);
-                 QColor re;
-                 re.setRed(co.red()*col.red()>>8);//按比例调整深浅(细节模式下画笔为白色)
-                 re.setBlue(co.blue()*col.blue()>>8);//近似,加快计算,毕竟255和256也没差多少嘛
-                 re.setGreen(co.green()*col.green()>>8);
-                 re.setAlpha(col.alpha()*co.alpha()>>8);
-                 re=merge(re,background);
-                 re=lighter(re);//亮度补偿
-                 ans.setPixelColor(i,j,re);
-             }
+             red*=qRed(tmp_data[i]);red>>=8;//位运算提升速度,精度损失较小
+             green*=qGreen(tmp_data[i]);green>>=8;
+             blue*=qBlue(tmp_data[i]);blue>>=8;
+             alpha*=qAlpha(tmp_data[i]);alpha>>=8;
          }
+         if(light>0)    //公式来源于:https://blog.csdn.net/maozefa/article/details/4493395
+         {
+             red*=(1/(1-light));
+             green*=(1/(1-light));
+             blue*=(1/(1-light));
+             red=min(red,255);
+             green=min(green,255);
+             blue=min(blue,255);
+         }
+         else if(light<0)
+         {
+             red*=(1+light);
+             green*=(1+light);
+             blue*=(1+light);
+         }
+         data[i]=qRgba(red,green,blue,alpha);
      }
+     result=QPixmap::fromImage(ans);
+     tmp=QImage();//清空临时数据,释放内存
  }
