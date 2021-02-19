@@ -20,12 +20,13 @@ void MyGraphicsView::wheelEvent(QWheelEvent *event)
 
 void MyGraphicsView::init(QPixmap *pix)//初始化
 {
-    scene.clear();
-    scene.addPixmap(*pix);//设置图片
-    setScene(&scene);
+    Pwidth=pix->width();
+    delete scene;
+    scene=new QGraphicsScene;
+    scene->addPixmap(*pix);//设置图片
+    setScene(scene);
     //初始化缩放比例
     resetTransform();
-    resetMatrix();
     double ratio_h=height();
     double ratio_w=width();
     ratio_h/=pix->height();
@@ -36,7 +37,21 @@ void MyGraphicsView::init(QPixmap *pix)//初始化
 
 void MyGraphicsView::refresh(QPixmap *pix)//刷新
 {
-    scene.clear();
-    scene.addPixmap(*pix);
-    setScene(&scene);
+    if(Pwidth>pix->width())
+    {
+        delete scene;
+        scene=new QGraphicsScene;
+        setScene(scene);
+    }
+    else
+    {
+        scene->clear();
+    }
+    Pwidth=pix->width();
+    scene->addPixmap(*pix);
+}
+
+MyGraphicsView::~MyGraphicsView()
+{
+    delete scene;
 }

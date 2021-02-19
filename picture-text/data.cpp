@@ -74,10 +74,10 @@ void data1::setImg(QString s)
             color=img.pixelColor(i,j);
             if(color.alpha())
             {
-                R[i][j]=(long long)color.red();
-                G[i][j]=(long long)color.green();
-                B[i][j]=(long long)color.blue();
-                A[i][j]=(long long)color.alpha();
+                R[i][j]=color.red();
+                G[i][j]=color.green();
+                B[i][j]=color.blue();
+                A[i][j]=color.alpha();
                 dt[i][j]=1;
             }
             else
@@ -138,14 +138,14 @@ QString data1::getChar(int &pos)
     ans.push_back(text[pos]);
     return ans;
 }
-float calculateRGBAValue(const float fTranslucent1, const float fTranslucent2, const float RGBVlue1, const float RGBVlue2)
+double calculateRGBAValue(const double fTranslucent1, const double fTranslucent2, const double RGBVlue1, const double RGBVlue2)
 {
 return (RGBVlue1 * fTranslucent1 * (1.0 - fTranslucent2) + RGBVlue2 * fTranslucent2)
         / (fTranslucent1 + fTranslucent2 - fTranslucent1 * fTranslucent2);  //计算两个叠加后的值
 }
 QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
 {
-    float a1,a2;
+    double a1,a2;
     a1=p1.alpha();a2=p2.alpha();
     a1/=255;a2/=255;
     if(a1+a2==0.0||a1+a2-a1*a2==0.0)
@@ -159,23 +159,23 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
     //处理两种颜色叠加时透明度a-alpha值
 #define backgroundColor p2
 #define foregroundColor p1
-    float fTranslucent1 = backgroundColor.alpha() / 255.0;
-    float fTranslucent2 = foregroundColor.alpha() / 255.0;
-    float fTranslucent = fTranslucent1 + fTranslucent2 - fTranslucent1 * fTranslucent2;
+    double fTranslucent1 = backgroundColor.alpha() / 255.0;
+    double fTranslucent2 = foregroundColor.alpha() / 255.0;
+    double fTranslucent = fTranslucent1 + fTranslucent2 - fTranslucent1 * fTranslucent2;
     //计算R-Red值
-    float fRed1 = backgroundColor.red() / 255.0;
-    float fRed2 = foregroundColor.red() / 255.0;
-    float fRed = calculateRGBAValue(fTranslucent1, fTranslucent2, fRed1, fRed2);
+    double fRed1 = backgroundColor.red() / 255.0;
+    double fRed2 = foregroundColor.red() / 255.0;
+    double fRed = calculateRGBAValue(fTranslucent1, fTranslucent2, fRed1, fRed2);
 
     //计算G - Green值
-    float fGreen1 = backgroundColor.green() / 255.0;
-    float fGreen2 = foregroundColor.green() / 255.0;
-    float fGreen = calculateRGBAValue(fTranslucent1, fTranslucent2, fGreen1, fGreen2);
+    double fGreen1 = backgroundColor.green() / 255.0;
+    double fGreen2 = foregroundColor.green() / 255.0;
+    double fGreen = calculateRGBAValue(fTranslucent1, fTranslucent2, fGreen1, fGreen2);
 
     //计算B - Blue值
-    float fBlue1 = backgroundColor.blue() / 255.0;
-    float fBlue2 = foregroundColor.blue() / 255.0;
-    float fBlue = calculateRGBAValue(fTranslucent1, fTranslucent2, fBlue1, fBlue2);
+    double fBlue1 = backgroundColor.blue() / 255.0;
+    double fBlue2 = foregroundColor.blue() / 255.0;
+    double fBlue = calculateRGBAValue(fTranslucent1, fTranslucent2, fBlue1, fBlue2);
     return QColor(fRed * 255, fGreen * 255, fBlue * 255, fTranslucent * 255);
 #undef foregroundColor
 #undef backgroundColor
