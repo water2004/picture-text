@@ -38,8 +38,8 @@ public:
     QPixmap result;//用于显示
 
     QFont font;//字体
-    long long **R,**G,**B,**A;//记录颜色值的前缀和数组
-    int **dt;//记录非透明像素数
+    double **R,**G,**B,**A;//记录颜色值的前缀和数组
+    double **dt;//记录非透明像素数
     int width,height;//原图宽和高
     int fixW,fixH;//横向修正大小和纵向修正大小
     double light;//亮度补偿,-0.99~0.99

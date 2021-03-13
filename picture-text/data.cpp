@@ -48,22 +48,22 @@ void data1::setImg(QString s)
     img.load(s);
     width=img.width();
     height=img.height();
-    R=new long long* [width+1];//+1保命,防止越界,下同
-    G=new long long* [width+1];
-    B=new long long* [width+1];
-    A=new long long* [width+1];
-    dt=new int* [width+1];
+    R=new double* [width+1];//+1保命,防止越界,下同
+    G=new double* [width+1];
+    B=new double* [width+1];
+    A=new double* [width+1];
+    dt=new double* [width+1];
     for(int i=0;i<=width;i++)//建立动态的二维数组
     {
-        R[i]=new long long[height+1];
+        R[i]=new double[height+1];
         R[i][height]=background.red();//初始化那个用来保命的+1,下同
-        G[i]=new long long[height+1];
+        G[i]=new double[height+1];
         G[i][height]=background.green();
-        B[i]=new long long[height+1];
+        B[i]=new double[height+1];
         B[i][height]=background.blue();
-        A[i]=new long long [height+1];
+        A[i]=new double[height+1];
         A[i][height]=background.alpha();
-        dt[i]=new int[height+1];
+        dt[i]=new double[height+1];
         dt[i][height]=0;
     }
     QColor color;
@@ -72,13 +72,13 @@ void data1::setImg(QString s)
         for(int j=0;j<height;j++)
         {
             color=img.pixelColor(i,j);
+            dt[i][j]=double(color.alpha())/255;
             if(color.alpha())
             {
-                R[i][j]=color.red();
-                G[i][j]=color.green();
-                B[i][j]=color.blue();
-                A[i][j]=color.alpha();
-                dt[i][j]=1;
+                R[i][j]=color.red()*dt[i][j];
+                G[i][j]=color.green()*dt[i][j];
+                B[i][j]=color.blue()*dt[i][j];
+                A[i][j]=color.alpha()*dt[i][j];
             }
             else
             {
@@ -86,7 +86,6 @@ void data1::setImg(QString s)
                 G[i][j]=0;
                 B[i][j]=0;
                 A[i][j]=0;
-                dt[i][j]=0;
             }
         }
     }
@@ -113,7 +112,7 @@ QColor data1::average(int x1, int y1, int x2, int y2)
     if(y2>=height) y2=height-1;
     if(y2<0) y2=0;
     long long sum;//区域内所有值的和
-    long long dot=dt[x2][y2]+dt[x1][y1]-dt[x2][y1]-dt[x1][y2];
+    double dot=dt[x2][y2]+dt[x1][y1]-dt[x2][y1]-dt[x1][y2];
     QColor ansc=Qt::white;//平均颜色
     if(!dot)
     {
@@ -214,6 +213,11 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
              if(mod)//纯净模式,设置画笔颜色
              {
                  QColor col=average(x/scale,(y-h)/scale,(x+w)/scale,y/scale);
+                 if(!col.alpha())//跳过透明字符
+                 {
+                     x+=w+fixW;//移位同时修正
+                     continue;
+                 }
                  painter.setPen(QPen(col));
              }
              painter.drawText(x,y,str);
