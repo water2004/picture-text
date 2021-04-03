@@ -22,9 +22,9 @@ public:
     /*  p1(x1,y1)  p2
      *
      *  p3  p4(x2,y2) */
-    QColor average(int x1,int y1,int x2,int y2);//求原图平均颜色值
-    QColor merge(QColor bak,QColor alp);
-    QString getChar(int &pos);//取出text中位于pos的字符
+    inline QColor average(int x1,int y1,int x2,int y2);//求原图平均颜色值
+    inline QColor merge(QColor bak,QColor alp);
+    inline QString getChar(int &pos);//取出text中位于pos的字符
     void setImg(QString s);//设置图片
     void create();//生成图片
 
@@ -48,6 +48,12 @@ public:
     bool repeat=true;//自动重复文字
     bool imgSetted=false;//没设置图片析构函数就delete了个寂寞,为了返回值的强迫症QAQ
     QColor background=Qt::black;
+
+    double fTranslucent1,fTranslucent2,fTranslucent;
+    double fRed1,fRed2,fRed;
+    double fGreen1,fGreen2,fGreen;
+    double fBlue1,fBlue2,fBlue;
+    double a1,a2;
 
 signals:
 

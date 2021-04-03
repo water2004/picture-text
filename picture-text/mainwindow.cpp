@@ -17,8 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->repeat->setChecked(true);
     dat->mod=true;
     ui->textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    ui->graphicsView->scene=new QGraphicsScene;
+    ui->graphicsView->scene=new MyScene;
     ui->graphicsView->setScene(ui->graphicsView->scene);
+    ui->graphicsView->set_main(this);
+    ui->graphicsView->scene->set_main(this);
 }
 
 MainWindow::~MainWindow()
@@ -116,4 +118,33 @@ void MainWindow::on_pushButton_2_clicked()
     mmp=QPixmap::fromImage(dat->ans);
     ui->graphicsView->refresh(&dat->result);
     dat->result=QPixmap();//释放内存
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent*event){
+//如果类型是jpg或者png才能接受拖动。
+//这里的compare字符串比较函数，相等的时候返回0，所以要取反
+   if(!event->mimeData()->urls()[0].fileName().right(3).compare("jpg")
+           ||!event->mimeData()->urls()[0].fileName().right(3).compare("png"))
+       event->acceptProposedAction();
+    else
+       event->ignore();//否则不接受鼠标事件
+}
+
+
+//放下事件
+void MainWindow::dropEvent(QDropEvent*event){
+    const QMimeData*qm=event->mimeData();//获取MIMEData
+    QString url=qm->urls()[0].toLocalFile();
+    setpic(url);
+}
+
+void MainWindow::setpic(QString url)
+{
+    if(url!="")//成功打开图片
+    {
+        dat->setImg(url);
+        dat->result=QPixmap::fromImage(dat->img);
+        ui->graphicsView->init(&dat->result);
+        dat->result=QPixmap();//释放内存
+    }
 }

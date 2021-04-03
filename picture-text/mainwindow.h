@@ -5,7 +5,10 @@
 #include "data.h"
 #include <QColorDialog>
 #include <QFileDialog>
-#include <QColorDialog>
+#include<QDragEnterEvent>
+#include<QMimeData>
+#include<QDropEvent>
+#include<QUrl>
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +25,11 @@ public:
     data1* getdat();
     QPixmap mmp;
     bool check();
+    void setpic(QString url);
+
+protected:
+    void dragEnterEvent(QDragEnterEvent*event);//拖动进入事件
+    void dropEvent(QDropEvent*event);
 
 private slots:
     void on_choosePic_clicked();

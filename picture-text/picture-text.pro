@@ -30,12 +30,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     data.cpp \
-    mygraphicsview.cpp
+    mygraphicsview.cpp \
+    myscene.cpp
 
 HEADERS += \
         mainwindow.h \
     data.h \
-    mygraphicsview.h
+    mygraphicsview.h \
+    myscene.h
 
 FORMS += \
         mainwindow.ui

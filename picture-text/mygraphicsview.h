@@ -6,6 +6,12 @@
 #include <QGraphicsView>
 #include <QImage>
 #include <QGraphicsScene>
+#include <mainwindow.h>
+#include<QDragEnterEvent>
+#include<QMimeData>
+#include<QDropEvent>
+#include<QUrl>
+#include <myscene.h>
 
 class MyGraphicsView : public QGraphicsView
 {
@@ -17,7 +23,16 @@ public:
     void refresh(QPixmap *pix);//刷新
     int Pwidth;
     ~MyGraphicsView();
-    QGraphicsScene *scene;
+    MyScene *scene;
+    MainWindow *mainw;
+    void set_main(MainWindow *w)
+    {
+        mainw=w;
+    }
+
+protected:
+    void dragEnterEvent(QDragEnterEvent*event);//拖动进入事件
+    void dropEvent(QDropEvent*event);
 
 signals:
 

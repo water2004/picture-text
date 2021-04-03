@@ -3,7 +3,7 @@
 
 MyGraphicsView::MyGraphicsView(QWidget *parent) : QGraphicsView(parent)
 {
-
+    this->setAcceptDrops(true);
 }
 
 void MyGraphicsView::wheelEvent(QWheelEvent *event)
@@ -22,7 +22,7 @@ void MyGraphicsView::init(QPixmap *pix)//初始化
 {
     Pwidth=pix->width();
     delete scene;
-    scene=new QGraphicsScene;
+    scene=new MyScene;
     scene->addPixmap(*pix);//设置图片
     setScene(scene);
     //初始化缩放比例
@@ -40,7 +40,7 @@ void MyGraphicsView::refresh(QPixmap *pix)//刷新
     if(Pwidth>pix->width())
     {
         delete scene;
-        scene=new QGraphicsScene;
+        scene=new MyScene;
         setScene(scene);
     }
     else
@@ -54,4 +54,20 @@ void MyGraphicsView::refresh(QPixmap *pix)//刷新
 MyGraphicsView::~MyGraphicsView()
 {
     delete scene;
+}
+
+void MyGraphicsView::dragEnterEvent(QDragEnterEvent*event){
+//如果类型是jpg或者png才能接受拖动。
+//这里的compare字符串比较函数，相等的时候返回0，所以要取反
+   if(!event->mimeData()->urls()[0].fileName().right(3).compare("jpg")
+           ||!event->mimeData()->urls()[0].fileName().right(3).compare("png"))
+       event->acceptProposedAction();
+    else
+       event->ignore();//否则不接受鼠标事件
+}
+
+void MyGraphicsView::dropEvent(QDropEvent*event){
+    const QMimeData*qm=event->mimeData();//获取MIMEData
+    QString url=qm->urls()[0].toLocalFile();
+    mainw->setpic(url);
 }

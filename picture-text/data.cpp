@@ -101,7 +101,7 @@ void data1::setImg(QString s)
         }
     }
 }
-QColor data1::average(int x1, int y1, int x2, int y2)
+inline QColor data1::average(int x1, int y1, int x2, int y2)
 {
     if(x1>=width) x1=width-1;//保命,防止越界
     if(x1<0) x1=0;
@@ -129,7 +129,7 @@ QColor data1::average(int x1, int y1, int x2, int y2)
     ansc.setAlpha(sum/((y2-y1+1)*(x2-x1+1)));
     return ansc;
 }
-QString data1::getChar(int &pos)
+inline QString data1::getChar(int &pos)
 {
     int size=text.size();
     while(pos>=size) pos-=size;//循环
@@ -137,14 +137,13 @@ QString data1::getChar(int &pos)
     ans.push_back(text[pos]);
     return ans;
 }
-double calculateRGBAValue(const double fTranslucent1, const double fTranslucent2, const double RGBVlue1, const double RGBVlue2)
+inline double calculateRGBAValue(const double fTranslucent1, const double fTranslucent2, const double RGBVlue1, const double RGBVlue2)
 {
 return (RGBVlue1 * fTranslucent1 * (1.0 - fTranslucent2) + RGBVlue2 * fTranslucent2)
         / (fTranslucent1 + fTranslucent2 - fTranslucent1 * fTranslucent2);  //计算两个叠加后的值
 }
-QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
+inline QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
 {
-    double a1,a2;
     a1=p1.alpha();a2=p2.alpha();
     a1/=255;a2/=255;
     if(a1+a2==0.0||a1+a2-a1*a2==0.0)
@@ -158,23 +157,23 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
     //处理两种颜色叠加时透明度a-alpha值
 #define backgroundColor p2
 #define foregroundColor p1
-    double fTranslucent1 = backgroundColor.alpha() / 255.0;
-    double fTranslucent2 = foregroundColor.alpha() / 255.0;
-    double fTranslucent = fTranslucent1 + fTranslucent2 - fTranslucent1 * fTranslucent2;
+    fTranslucent1 = backgroundColor.alpha() / 255.0;
+    fTranslucent2 = foregroundColor.alpha() / 255.0;
+    fTranslucent = fTranslucent1 + fTranslucent2 - fTranslucent1 * fTranslucent2;
     //计算R-Red值
-    double fRed1 = backgroundColor.red() / 255.0;
-    double fRed2 = foregroundColor.red() / 255.0;
-    double fRed = calculateRGBAValue(fTranslucent1, fTranslucent2, fRed1, fRed2);
+    fRed1 = backgroundColor.red() / 255.0;
+    fRed2 = foregroundColor.red() / 255.0;
+    fRed = calculateRGBAValue(fTranslucent1, fTranslucent2, fRed1, fRed2);
 
     //计算G - Green值
-    double fGreen1 = backgroundColor.green() / 255.0;
-    double fGreen2 = foregroundColor.green() / 255.0;
-    double fGreen = calculateRGBAValue(fTranslucent1, fTranslucent2, fGreen1, fGreen2);
+    fGreen1 = backgroundColor.green() / 255.0;
+    fGreen2 = foregroundColor.green() / 255.0;
+    fGreen = calculateRGBAValue(fTranslucent1, fTranslucent2, fGreen1, fGreen2);
 
     //计算B - Blue值
-    double fBlue1 = backgroundColor.blue() / 255.0;
-    double fBlue2 = foregroundColor.blue() / 255.0;
-    double fBlue = calculateRGBAValue(fTranslucent1, fTranslucent2, fBlue1, fBlue2);
+    fBlue1 = backgroundColor.blue() / 255.0;
+    fBlue2 = foregroundColor.blue() / 255.0;
+    fBlue = calculateRGBAValue(fTranslucent1, fTranslucent2, fBlue1, fBlue2);
     return QColor(fRed * 255, fGreen * 255, fBlue * 255, fTranslucent * 255);
 #undef foregroundColor
 #undef backgroundColor
@@ -186,7 +185,7 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
      tmp=tmp.scaled(int(width*scale),int(height*scale),Qt::KeepAspectRatio, Qt::SmoothTransformation);//缩放
      ans=QImage(tmp.width(),tmp.height(),QImage::Format_ARGB32);
      if(!mod) ans.fill(QColor(255,255,255,0));
-     else ans.fill(background);
+     else ans.fill(QColor(background));
      QPainter painter(&ans);//设置画布
      painter.setPen(QPen(Qt::white));//初始化画笔
      painter.setFont(font);
@@ -249,9 +248,9 @@ QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
              green*=qGreen(tmp_data[i]);green>>=8;
              blue*=qBlue(tmp_data[i]);blue>>=8;
              alpha*=qAlpha(tmp_data[i]);alpha>>=8;
-             QColor ansc=merge(QColor(red,green,blue,alpha),background);
-             red=ansc.red();blue=ansc.blue();green=ansc.green();alpha=ansc.alpha();
          }
+         QColor ansc=merge(QColor(red,green,blue,alpha),background);
+         red=ansc.red();blue=ansc.blue();green=ansc.green();alpha=ansc.alpha();
          if(light>0)    //公式来源于:https://blog.csdn.net/maozefa/article/details/4493395
          {
              red*=(1/(1-light));
