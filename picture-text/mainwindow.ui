@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="acceptDrops">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <property name="windowTitle">
    <string>以字为图</string>
@@ -28,13 +28,13 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="acceptDrops">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
      <widget class="QWidget" name="widget_4" native="true">
       <property name="acceptDrops">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -120,7 +120,7 @@
        </sizepolicy>
       </property>
       <property name="acceptDrops">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>

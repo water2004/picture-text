@@ -144,8 +144,8 @@ return (RGBVlue1 * fTranslucent1 * (1.0 - fTranslucent2) + RGBVlue2 * fTransluce
 }
 inline QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
 {
-    a1=p1.alpha();a2=p2.alpha();
-    a1/=255;a2/=255;
+    a1=precalc[p1.alpha()];a2=precalc[p2.alpha()];
+    //a1/=255;a2/=255;
     if(a1+a2==0.0||a1+a2-a1*a2==0.0)
     {
         return QColor(0,0,0,0);
@@ -157,22 +157,22 @@ inline QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
     //处理两种颜色叠加时透明度a-alpha值
 #define backgroundColor p2
 #define foregroundColor p1
-    fTranslucent1 = backgroundColor.alpha() / 255.0;
-    fTranslucent2 = foregroundColor.alpha() / 255.0;
+    fTranslucent1 = precalc[backgroundColor.alpha()];
+    fTranslucent2 = precalc[foregroundColor.alpha()];
     fTranslucent = fTranslucent1 + fTranslucent2 - fTranslucent1 * fTranslucent2;
     //计算R-Red值
-    fRed1 = backgroundColor.red() / 255.0;
-    fRed2 = foregroundColor.red() / 255.0;
+    fRed1 = precalc[backgroundColor.red()];
+    fRed2 = precalc[foregroundColor.red()];
     fRed = calculateRGBAValue(fTranslucent1, fTranslucent2, fRed1, fRed2);
 
     //计算G - Green值
-    fGreen1 = backgroundColor.green() / 255.0;
-    fGreen2 = foregroundColor.green() / 255.0;
+    fGreen1 = precalc[backgroundColor.green()];
+    fGreen2 = precalc[foregroundColor.green()];
     fGreen = calculateRGBAValue(fTranslucent1, fTranslucent2, fGreen1, fGreen2);
 
     //计算B - Blue值
-    fBlue1 = backgroundColor.blue() / 255.0;
-    fBlue2 = foregroundColor.blue() / 255.0;
+    fBlue1 = precalc[backgroundColor.blue()];
+    fBlue2 = precalc[foregroundColor.blue()];
     fBlue = calculateRGBAValue(fTranslucent1, fTranslucent2, fBlue1, fBlue2);
     return QColor(fRed * 255, fGreen * 255, fBlue * 255, fTranslucent * 255);
 #undef foregroundColor
@@ -184,8 +184,9 @@ inline QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
      QImage tmp=img;
      tmp=tmp.scaled(int(width*scale),int(height*scale),Qt::KeepAspectRatio, Qt::SmoothTransformation);//缩放
      ans=QImage(tmp.width(),tmp.height(),QImage::Format_ARGB32);
+     //QColor new_bg=merge(background,QColor(255,255,255,255));
      if(!mod) ans.fill(QColor(255,255,255,0));
-     else ans.fill(QColor(background));
+     else ans.fill(background);
      QPainter painter(&ans);//设置画布
      painter.setPen(QPen(Qt::white));//初始化画笔
      painter.setFont(font);
@@ -236,6 +237,19 @@ inline QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
      unsigned int *tmp_data = (unsigned int *)tmp.bits();
      int pixel=maxW*maxH;
      int red,green,blue,alpha;
+     double calc=1/(1-light);
+     int lighter[256];
+     for(int i=0;i<256;i++)//预处理加速运算
+     {
+         if (light>0)
+         {
+             lighter[i]=min(255,int(i*calc));
+         }
+         else
+         {
+             lighter[i]=i*(1+light);
+         }
+     }
      for(int i=0;i<pixel;i++)
      {
          red=qRed(data[i]);
@@ -248,24 +262,13 @@ inline QColor data1::merge(QColor p1, QColor p2)//合并颜色,p1为前景
              green*=qGreen(tmp_data[i]);green>>=8;
              blue*=qBlue(tmp_data[i]);blue>>=8;
              alpha*=qAlpha(tmp_data[i]);alpha>>=8;
+             QColor ansc=merge(QColor(red,green,blue,alpha),background);
+             red=ansc.red();blue=ansc.blue();green=ansc.green();alpha=ansc.alpha();
          }
-         QColor ansc=merge(QColor(red,green,blue,alpha),background);
-         red=ansc.red();blue=ansc.blue();green=ansc.green();alpha=ansc.alpha();
-         if(light>0)    //公式来源于:https://blog.csdn.net/maozefa/article/details/4493395
-         {
-             red*=(1/(1-light));
-             green*=(1/(1-light));
-             blue*=(1/(1-light));
-             red=min(red,255);
-             green=min(green,255);
-             blue=min(blue,255);
-         }
-         else if(light<0)
-         {
-             red*=(1+light);
-             green*=(1+light);
-             blue*=(1+light);
-         }
+         //亮度补偿公式来源于:https://blog.csdn.net/maozefa/article/details/4493395
+         red=lighter[red];
+         green=lighter[green];
+         blue=lighter[blue];
          data[i]=qRgba(red,green,blue,alpha);
      }
      result=QPixmap::fromImage(ans);

@@ -54,6 +54,7 @@ public:
     double fGreen1,fGreen2,fGreen;
     double fBlue1,fBlue2,fBlue;
     double a1,a2;
+    double precalc[256];
 
 signals:
 

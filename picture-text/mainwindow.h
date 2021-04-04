@@ -27,10 +27,6 @@ public:
     bool check();
     void setpic(QString url);
 
-protected:
-    void dragEnterEvent(QDragEnterEvent*event);//拖动进入事件
-    void dropEvent(QDropEvent*event);
-
 private slots:
     void on_choosePic_clicked();
 

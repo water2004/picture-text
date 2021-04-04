@@ -14,9 +14,3 @@ void MyScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event){
     else
        event->ignore();//否则不接受鼠标事件
 }
-
-void MyScene::dropEvent(QDropEvent*event){
-    const QMimeData*qm=event->mimeData();//获取MIMEData
-    QString url=qm->urls()[0].toLocalFile();
-    mainw->setpic(url);
-}

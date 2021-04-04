@@ -21,6 +21,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene(ui->graphicsView->scene);
     ui->graphicsView->set_main(this);
     ui->graphicsView->scene->set_main(this);
+    for(int i=0;i<256;i++)
+    {
+        dat->precalc[i]=i/255.0;
+    }
 }
 
 MainWindow::~MainWindow()
@@ -118,24 +122,6 @@ void MainWindow::on_pushButton_2_clicked()
     mmp=QPixmap::fromImage(dat->ans);
     ui->graphicsView->refresh(&dat->result);
     dat->result=QPixmap();//释放内存
-}
-
-void MainWindow::dragEnterEvent(QDragEnterEvent*event){
-//如果类型是jpg或者png才能接受拖动。
-//这里的compare字符串比较函数，相等的时候返回0，所以要取反
-   if(!event->mimeData()->urls()[0].fileName().right(3).compare("jpg")
-           ||!event->mimeData()->urls()[0].fileName().right(3).compare("png"))
-       event->acceptProposedAction();
-    else
-       event->ignore();//否则不接受鼠标事件
-}
-
-
-//放下事件
-void MainWindow::dropEvent(QDropEvent*event){
-    const QMimeData*qm=event->mimeData();//获取MIMEData
-    QString url=qm->urls()[0].toLocalFile();
-    setpic(url);
 }
 
 void MainWindow::setpic(QString url)
